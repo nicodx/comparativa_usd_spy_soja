@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1995—2025 · Erosión, Meseta y Rendimiento</title>
+<style>
+  :root{
+    --paper:#f2f1ec;
+    --ink:#111111;
+    --line:rgba(17,17,17,0.16);
+    --equity:#1a1a1a;
+    --soy:#a87b1f;
+    --erosion:#b4321f;
+    --band:rgba(17,17,17,0.05);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Mono', 'Space Mono', monospace;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Archivo Black','Helvetica Neue',Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .rule{border:none;border-top:2px solid var(--ink);margin:0;}
+  .hairline{border:none;border-top:1px solid var(--line);margin:0;}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 40px;}
+  a{color:inherit;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:var(--paper);
+    border-bottom:2px solid var(--ink);
+  }
+  .navrow{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 40px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+  }
+  .navrow .links{display:flex;gap:32px;}
+  .navrow .links span{cursor:pointer;opacity:0.6;transition:opacity .15s;font-size:14px;font-weight:600;letter-spacing:0.06em;}
+  .navrow .links span:hover{opacity:1;}
+  .navrow .brand{font-family:'Archivo Black',sans-serif;font-weight:900;}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:90px 0 60px;border-bottom:2px solid var(--ink);}
+  .eyebrow{
+    font-size:12px;letter-spacing:0.18em;text-transform:uppercase;
+    display:flex;gap:14px;align-items:center;margin-bottom:26px;
+  }
+  .eyebrow::before{content:"";width:34px;height:2px;background:var(--erosion);display:inline-block;}
+  .hero h1{
+    font-size:clamp(48px,9vw,128px);
+    line-height:0.92;
+  }
+  .hero h1 .accent{color:var(--erosion);}
+  .hero .thesis{
+    margin-top:36px;
+    max-width:760px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+  }
+  .hero .thesis b{background:linear-gradient(180deg,transparent 62%, rgba(180,50,31,0.28) 62%);}
+  .metaRow{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    margin-top:56px;border-top:1px solid var(--line);
+  }
+  .metaRow div{padding:18px 0;border-right:1px solid var(--line);}
+  .metaRow div:last-child{border-right:none;}
+  .metaRow .k{font-size:14px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.65;font-weight:600;}
+  .metaRow .v{font-family:'Archivo Black',sans-serif;font-size:22px;margin-top:6px;}
+
+  /* ---------- SECTION LABEL ---------- */
+  .secHead{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding:54px 0 26px;
+  }
+  .secHead .num{font-size:12px;letter-spacing:0.1em;opacity:0.5;}
+  .secHead h2{font-size:clamp(26px,3.6vw,44px);}
+
+  /* ---------- CHART ---------- */
+  .chartSection{padding-bottom:70px;}
+  .legend{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:22px;font-size:12px;text-transform:uppercase;letter-spacing:0.04em;}
+  .legend .item{display:flex;align-items:center;gap:8px;}
+  .swatch{width:22px;height:3px;display:inline-block;}
+  .chartFrame{
+    border:2px solid var(--ink);
+    background:#fbfaf6;
+    padding:26px 22px 10px;
+    position:relative;
+  }
+  #chartSvg{width:100%;height:auto;display:block;overflow:visible;}
+  .tooltip{
+    position:absolute;pointer-events:none;
+    background:var(--ink);color:var(--paper);
+    font-size:14px;line-height:1.6;padding:12px 16px;
+    min-width:190px;
+    transform:translate(-50%,-115%);
+    opacity:0;transition:opacity .1s;
+    z-index:20;
+  }
+  .tooltip .ty{font-family:'Archivo Black',sans-serif;font-size:17px;margin-bottom:6px;}
+  .tooltip .row{display:flex;justify-content:space-between;gap:14px;}
+  .chartFoot{
+    display:flex;justify-content:space-between;
+    font-size:13px;opacity:0.65;padding:10px 2px 0;text-transform:uppercase;letter-spacing:0.04em;font-weight:600;
+  }
+
+  /* ---------- STAT CARDS ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink);border-left:2px solid var(--ink);}
+  .card{border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:26px 24px 24px;}
+  .card .tag{font-size:14px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.7;font-weight:600;}
+  .card .big{font-family:'Archivo Black',sans-serif;font-size:40px;margin-top:10px;}
+  .card .sub{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.5;margin-top:12px;opacity:0.85;}
+  .card.equity .big{color:var(--equity);}
+  .card.soy .big{color:var(--soy);}
+  .card.erosion .big{color:var(--erosion);}
+
+  /* ---------- READING ---------- */
+  .reading{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:36px;
+    padding:50px 0 70px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14.5px;line-height:1.65;
+  }
+  .reading h3{font-size:14px;margin-bottom:10px;text-transform:none;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;}
+  .reading .marker{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--paper);
+    font-family:'Archivo Black',sans-serif;font-size:12px;text-align:center;line-height:26px;margin-bottom:14px;}
+  .reading .marker.soy{background:var(--soy);}
+  .reading .marker.erosion{background:var(--erosion);}
+
+  /* ---------- METHOD / FOOTER ---------- */
+  footer{border-top:2px solid var(--ink);padding:40px 0 60px;}
+  .methGrid{display:grid;grid-template-columns:1fr 1fr;gap:40px;font-size:12px;line-height:1.7;opacity:0.85;}
+  .methGrid b{opacity:1;}
+  .finalNote{margin-top:30px;font-size:11px;opacity:0.55;}
+  .finalNote a{color:var(--ink);text-decoration:underline;text-underline-offset:2px;font-weight:600;}
+
+  @media (max-width:860px){
+    .metaRow{grid-template-columns:1fr;}
+    .metaRow div{border-right:none;border-bottom:1px solid var(--line);}
+    .cards{grid-template-columns:1fr;}
+    .reading{grid-template-columns:1fr;}
+    .navrow .links{display:none;}
+    .wrap{padding:0 20px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navrow">
+    <div class="brand">30Y / USD·SOJA·EQUITY</div>
+    <div class="links">
+      <span onclick="document.getElementById('chart').scrollIntoView({behavior:'smooth'})">Gráfico</span>
+      <span onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">Métricas</span>
+      <span onclick="document.getElementById('read').scrollIntoView({behavior:'smooth'})">Lectura</span>
+      <span onclick="document.getElementById('meth').scrollIntoView({behavior:'smooth'})">Fuentes</span>
+    </div>
+  </div>
+</nav>
+
+<header class="wrap hero">
+  <div class="eyebrow">Serie indexada · Base 100 = 1995 · Escala logarítmica</div>
+  <h1>Un<br>dólar<span class="accent">.</span><br>Tres relojes<span class="accent">.</span></h1>
+  <p class="thesis">
+    Treinta años de historia monetaria en una sola curva: <b>US$100 nominales de 1995 hoy compran apenas US$47,33</b> de aquel poder adquisitivo. Mientras tanto la soja —el commodity de referencia para cualquier economía exportadora de alimentos— dibuja una <b>meseta con picos, no una tendencia</b>: hoy vale, en dólares nominales, prácticamente lo mismo que en 2007. El S&P 500, en cambio, multiplicó su valor indexado por más de <b>16 veces</b>. Un mismo eje temporal, tres velocidades completamente distintas.
+  </p>
+
+  <div class="metaRow">
+    <div><div class="k">Rango analizado</div><div class="v">1995 → 2025</div></div>
+    <div><div class="k">S&P 500 (índice, nominal)</div><div class="v">×16,2</div></div>
+    <div><div class="k">Poder de compra de US$100</div><div class="v">US$47,33</div></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="chart" class="chartSection">
+    <div class="secHead">
+      <div>
+        <div class="secHead-num" style="font-size:12px;opacity:0.5;letter-spacing:0.1em;">01 — VISUALIZACIÓN</div>
+        <h2>Erosión, meseta y rendimiento</h2>
+      </div>
+      <div class="num" style="max-width:260px;text-align:right;font-size:11px;line-height:1.5;opacity:0.6;">Pasá el cursor sobre el gráfico para ver el detalle año a año.</div>
+    </div>
+
+    <div class="legend">
+      <div class="item"><span class="swatch" style="background:var(--equity)"></span>S&P 500 (nominal, indexado)</div>
+      <div class="item"><span class="swatch" style="background:var(--soy)"></span>Soja — precio internacional (nominal, indexado)</div>
+      <div class="item"><span class="swatch" style="background:var(--erosion);height:0;border-top:3px dashed var(--erosion);"></span>Poder de compra de US$100 de 1995 (CPI-U)</div>
+    </div>
+
+    <div class="chartFrame">
+      <svg id="chartSvg" viewBox="0 0 1200 620"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+    <div class="chartFoot">
+      <span>Índice 100 = valor de cada serie en 1995</span>
+      <span>Eje Y logarítmico — permite comparar magnitudes muy distintas en un mismo plano</span>
+    </div>
+  </section>
+
+  <section id="stats">
+    <div class="secHead">
+      <div>
+        <div style="font-size:12px;opacity:0.5;letter-spacing:0.1em;">02 — MÉTRICAS</div>
+        <h2>Tasas compuestas, 30 años</h2>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card equity">
+        <div class="tag">S&P 500 — CAGR nominal</div>
+        <div class="big">+8,9%</div>
+        <div class="sub">CAGR real ≈ +6,2% anual descontando inflación en dólares. El equity global compensó —y superó ampliamente— la erosión monetaria.</div>
+      </div>
+      <div class="card soy">
+        <div class="tag">Soja — CAGR nominal</div>
+        <div class="big">+1,8%</div>
+        <div class="sub">CAGR real ≈ −0,7% anual. La "meseta" no es estancamiento aparente: en términos reales, el poder de compra que otorga una tonelada de soja se contrajo en 30 años.</div>
+      </div>
+      <div class="card erosion">
+        <div class="tag">Inflación US (CPI-U) — promedio</div>
+        <div class="big">+2,5%</div>
+        <div class="sub">Anual compuesto, 1995-2025. Suficiente para licuar más de la mitad del poder de compra nominal de un dólar guardado bajo el colchón.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="read" class="reading">
+    <div>
+      <span class="marker">01</span>
+      <h3>La meseta de la soja no es casualidad de commodity</h3>
+      <p>El pico 2011-2013 (supercycle de commodities: demanda china estructural, biocombustibles, QE post-2008) y el pico 2021-2022 (shock pandémico + guerra Rusia-Ucrania) son eventos financieros, no agronómicos. Entre esos picos, el precio nominal vuelve sistemáticamente a una banda de US$320-400/ton — la misma banda de 2007. Para un país exportador de alimentos, esto implica que el término de intercambio no mejora estructuralmente: mejora en shocks, y luego revierte.</p>
+    </div>
+    <div>
+      <span class="marker soy">02</span>
+      <h3>El equity global no es "más riesgo, más retorno" — es la contracara de la erosión</h3>
+      <p>El S&P 500 no solo licuó la inflación: la superó por un margen de captura de valor real que ningún commodity replicó en el período. Esto no es casualidad — es la función misma del equity: un reclamo sobre flujos de caja futuros que, agregados, crecen en términos reales por productividad y reinversión, mientras el efectivo solo pierde valor por diseño (el 2% target de inflación es, en sí mismo, una política deliberada de erosión).</p>
+    </div>
+    <div>
+      <span class="marker erosion">03</span>
+      <h3>El dólar bajo el colchón es la peor call trade del período</h3>
+      <p>US$100 de 1995, no invertidos, valen hoy US$47,33 en poder de compra — una pérdida del 52,7% en 30 años pese a que EE.UU. tuvo una de las inflaciones más "domadas" del mundo desarrollado en ese lapso. La lección no es sofisticada, pero rara vez se visualiza con esta claridad: mantener liquidez nominal sin exposición a activos reales es, estructuralmente, una posición corta contra el tiempo.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer id="meth">
+  <div class="wrap">
+    <div class="methGrid">
+      <div>
+        <b>Metodología</b><br>
+        Las tres series se indexaron a base 100 en 1995 para permitir su comparación en un mismo plano pese a operar en escalas nominales muy distintas (US$ 465 → US$ 7.554 en el S&P 500; US$ 168 → US$ 570/ton en soja). El eje Y utiliza escala logarítmica: en escala lineal, el crecimiento del S&P 500 aplastaría visualmente a las otras dos series contra el eje X.<br><br>
+        <b>Poder de compra:</b> calculado como 100 × CPI(1995) / CPI(año), usando el CPI-U de EE.UU. (Bureau of Labor Statistics), no seasonally adjusted, promedio anual. Es una aproximación en dólares estadounidenses, no en pesos argentinos ni en una canasta global de inflación.
+      </div>
+      <div>
+        <b>Fuentes</b><br>
+        S&P 500 — Standard & Poor's / Robert Shiller, vía multpl.com (serie histórica anual).<br>
+        Soja — Precio internacional de referencia (FOB U.S. Gulf), Fondo Monetario Internacional, vía FRED (Federal Reserve Bank of St. Louis), serie PSOYBUSDA, promedio anual en USD/tonelada métrica.<br>
+        CPI-U — U.S. Bureau of Labor Statistics, series históricas y mensuales 2016-2026 combinadas con promedios anuales publicados 1995-2015.<br><br>
+        <span class="finalNote">Desarrollo: <a href="https://amabili.space/" target="_blank" rel="noopener">Nicolás Amábili</a> · Con fines educativos y demostrativos.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const YEARS = [1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+
+const SP_RAW = [465.25,614.42,766.22,963.36,1248.77,1425.59,1335.63,1140.21,895.84,1132.52,1181.41,1278.73,1424.16,1378.76,865.58,1123.58,1282.62,1300.58,1480.40,1822.36,2028.18,1918.60,2275.12,2789.80,2607.39,3278.20,3793.75,4573.82,3960.66,4804.49,5979.52];
+
+const SOY_RAW = [224.0154,277.4580,280.6025,223.2900,174.9194,183.0517,168.7546,188.8662,233.1875,276.6330,223.1503,217.4539,317.3197,452.9425,378.5456,384.9453,484.2459,537.7618,517.2038,457.8135,347.3556,362.7068,358.8242,342.5282,327.0021,349.8775,505.1009,569.6918,520.4768,405.2100,380.6765];
+
+const CPI = [152.383,156.858,160.523,163.007,166.583,172.192,177.042,179.867,183.960,188.893,195.267,201.558,207.344,215.254,214.565,218.076,224.943,229.601,232.962,236.744,237.038,240.007,245.120,251.107,255.657,258.811,270.970,292.655,304.702,313.689,321.943];
+
+const spIdx = SP_RAW.map(v => v/SP_RAW[0]*100);
+const soyIdx = SOY_RAW.map(v => v/SOY_RAW[0]*100);
+const ppIdx = CPI.map(v => CPI[0]/v*100);
+
+// ---- chart geometry ----
+const W=1200,H=620, ML=64, MR=26, MT=20, MB=54;
+const plotW = W-ML-MR, plotH = H-MT-MB;
+const yMin=40, yMax=1800;
+
+function xScale(year){ return ML + (year-1995)/(2025-1995)*plotW; }
+function yScale(val){
+  const lv = Math.log10(val), l0 = Math.log10(yMin), l1 = Math.log10(yMax);
+  return MT + plotH - (lv-l0)/(l1-l0)*plotH;
+}
+
+function pathFor(arr){
+  return arr.map((v,i)=> (i===0?'M':'L') + xScale(YEARS[i]).toFixed(2) + ',' + yScale(v).toFixed(2)).join(' ');
+}
+
+const svg = document.getElementById('chartSvg');
+svg.setAttribute('viewBox','0 0 '+W+' '+H);
+let s = '';
+
+// background bands (macro events)
+const bands = [
+  {x0:2000,x1:2002.3,label:'Dot-com'},
+  {x0:2007,x1:2009.3,label:'GFC 2008'},
+  {x0:2020,x1:2020.9,label:'COVID'},
+  {x0:2021.3,x1:2022.9,label:'Shock inflación'}
+];
+bands.forEach(b=>{
+  s += `<rect x="${xScale(b.x0).toFixed(1)}" y="${MT}" width="${(xScale(b.x1)-xScale(b.x0)).toFixed(1)}" height="${plotH}" fill="var(--band)"></rect>`;
+});
+
+// gridlines (log)
+const gridVals = [50,100,200,400,800,1600];
+gridVals.forEach(v=>{
+  const y = yScale(v);
+  s += `<line x1="${ML}" y1="${y.toFixed(1)}" x2="${W-MR}" y2="${y.toFixed(1)}" stroke="var(--line)" stroke-width="1"></line>`;
+  s += `<text x="${ML-10}" y="${(y+5).toFixed(1)}" font-size="15" text-anchor="end" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-weight="600" opacity="0.7">${v}</text>`;
+});
+
+// x axis year labels every 5 years
+for(let yr=1995; yr<=2025; yr+=5){
+  const x = xScale(yr);
+  s += `<line x1="${x.toFixed(1)}" y1="${MT}" x2="${x.toFixed(1)}" y2="${MT+plotH}" stroke="var(--line)" stroke-width="1"></line>`;
+  s += `<text x="${x.toFixed(1)}" y="${H-14}" font-size="15" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-weight="600" opacity="0.75">${yr}</text>`;
+}
+
+// band labels
+bands.forEach(b=>{
+  const xm=(xScale(b.x0)+xScale(b.x1))/2;
+  s += `<text x="${xm.toFixed(1)}" y="${MT+18}" font-size="13" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-weight="600" opacity="0.6" letter-spacing="0.5">${b.label.toUpperCase()}</text>`;
+});
+
+// axis frame
+s += `<rect x="${ML}" y="${MT}" width="${plotW}" height="${plotH}" fill="none" stroke="var(--ink)" stroke-width="2"></rect>`;
+
+// series paths
+const spPath = pathFor(spIdx);
+const soyPath = pathFor(soyIdx);
+const ppPath = pathFor(ppIdx);
+
+s += `<path id="pathSP" d="${spPath}" fill="none" stroke="var(--equity)" stroke-width="3" stroke-linejoin="round"></path>`;
+s += `<path id="pathSOY" d="${soyPath}" fill="none" stroke="var(--soy)" stroke-width="3" stroke-linejoin="round"></path>`;
+s += `<path id="pathPP" d="${ppPath}" fill="none" stroke="var(--erosion)" stroke-width="3" stroke-dasharray="7 5" stroke-linejoin="round"></path>`;
+
+// end labels
+s += `<text x="${xScale(2025)+8}" y="${yScale(spIdx[30])+4}" font-size="12" fill="var(--equity)" font-family="Archivo Black, sans-serif">S&amp;P 500</text>`;
+s += `<text x="${xScale(2025)+8}" y="${yScale(soyIdx[30])+4}" font-size="12" fill="var(--soy)" font-family="Archivo Black, sans-serif">SOJA</text>`;
+s += `<text x="${xScale(2025)+8}" y="${yScale(ppIdx[30])+4}" font-size="12" fill="var(--erosion)" font-family="Archivo Black, sans-serif">USD real</text>`;
+
+// hover targets
+YEARS.forEach((yr,i)=>{
+  const x = xScale(yr);
+  s += `<rect class="hoverzone" data-i="${i}" x="${(x-((plotW/60))).toFixed(1)}" y="${MT}" width="${(plotW/30).toFixed(1)}" height="${plotH}" fill="transparent"></rect>`;
+});
+
+svg.innerHTML = s;
+
+// crosshair + dots (added after innerHTML so we can reference them in JS easily)
+const crosshair = document.createElementNS('http://www.w3.org/2000/svg','line');
+crosshair.setAttribute('y1',MT); crosshair.setAttribute('y2',MT+plotH);
+crosshair.setAttribute('stroke','var(--ink)'); crosshair.setAttribute('stroke-width','1');
+crosshair.setAttribute('stroke-dasharray','2 3'); crosshair.style.opacity=0;
+svg.appendChild(crosshair);
+
+function mkDot(color){
+  const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c.setAttribute('r','5'); c.setAttribute('fill',color);
+  c.setAttribute('stroke','var(--paper)'); c.setAttribute('stroke-width','2');
+  c.style.opacity=0;
+  svg.appendChild(c);
+  return c;
+}
+const dotSP = mkDot('#1a1a1a');
+const dotSOY = mkDot('#a87b1f');
+const dotPP = mkDot('#b4321f');
+
+const tooltip = document.getElementById('tooltip');
+const frame = document.querySelector('.chartFrame');
+
+function fmt(n){ return n.toLocaleString('es-AR',{maximumFractionDigits:1}); }
+function fmtUSD(n,dec){ return n.toLocaleString('es-AR',{maximumFractionDigits:dec===undefined?2:dec}); }
+
+svg.querySelectorAll('.hoverzone').forEach(z=>{
+  z.addEventListener('mouseenter', (e)=>{
+    const i = parseInt(z.getAttribute('data-i'));
+    const x = xScale(YEARS[i]);
+    crosshair.setAttribute('x1',x); crosshair.setAttribute('x2',x); crosshair.style.opacity=1;
+    dotSP.setAttribute('cx',x); dotSP.setAttribute('cy',yScale(spIdx[i])); dotSP.style.opacity=1;
+    dotSOY.setAttribute('cx',x); dotSOY.setAttribute('cy',yScale(soyIdx[i])); dotSOY.style.opacity=1;
+    dotPP.setAttribute('cx',x); dotPP.setAttribute('cy',yScale(ppIdx[i])); dotPP.style.opacity=1;
+
+    tooltip.innerHTML = `<div class="ty">${YEARS[i]}</div>
+      <div class="row"><span>S&amp;P 500</span><span>${fmt(spIdx[i])} <span style="opacity:.55">(US$ ${fmtUSD(SP_RAW[i])})</span></span></div>
+      <div class="row"><span>Soja</span><span>${fmt(soyIdx[i])} <span style="opacity:.55">(US$ ${fmtUSD(SOY_RAW[i],0)}/t)</span></span></div>
+      <div class="row"><span>USD real</span><span>${fmt(ppIdx[i])} <span style="opacity:.55">(US$ ${fmtUSD(ppIdx[i])})</span></span></div>`;
+    tooltip.style.opacity=1;
+
+    const rect = frame.getBoundingClientRect();
+    const svgRect = svg.getBoundingClientRect();
+    const scaleX = svgRect.width / W;
+    const px = svgRect.left - rect.left + x*scaleX;
+    const py = svgRect.top - rect.top + (MT+20)*scaleX;
+    tooltip.style.left = px+'px';
+    tooltip.style.top = py+'px';
+  });
+});
+svg.addEventListener('mouseleave', ()=>{
+  crosshair.style.opacity=0; dotSP.style.opacity=0; dotSOY.style.opacity=0; dotPP.style.opacity=0;
+  tooltip.style.opacity=0;
+});
+
+// draw-in animation on scroll into view
+function animatePath(id){
+  const p = document.getElementById(id);
+  const len = p.getTotalLength();
+  p.style.strokeDasharray = len;
+  p.style.strokeDashoffset = len;
+  p.getBoundingClientRect();
+  p.style.transition = 'stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1)';
+  requestAnimationFrame(()=>{ p.style.strokeDashoffset = 0; });
+}
+let animated=false;
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting && !animated){
+      animated=true;
+      animatePath('pathSP');
+      animatePath('pathSOY');
+      setTimeout(()=>{
+        const p = document.getElementById('pathPP');
+        const len = p.getTotalLength();
+        p.style.strokeDasharray = '7 5';
+        p.style.opacity=0;
+        p.style.transition='opacity 1.2s ease';
+        requestAnimationFrame(()=>{ p.style.opacity=1; });
+      }, 200);
+    }
+  });
+},{threshold:0.2});
+obs.observe(document.querySelector('.chartFrame'));
+</script>
+
+</body>
+</html>
