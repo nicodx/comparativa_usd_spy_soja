@@ -11,6 +11,7 @@
     --line:rgba(17,17,17,0.16);
     --equity:#1a1a1a;
     --soy:#a87b1f;
+    --gold:#2f5d8a;
     --erosion:#b4321f;
     --band:rgba(17,17,17,0.05);
   }
@@ -115,26 +116,28 @@
   }
 
   /* ---------- STAT CARDS ---------- */
-  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink);border-left:2px solid var(--ink);}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink);border-left:2px solid var(--ink);}
   .card{border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:26px 24px 24px;}
   .card .tag{font-size:14px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.7;font-weight:600;}
-  .card .big{font-family:'Archivo Black',sans-serif;font-size:40px;margin-top:10px;}
+  .card .big{font-family:'Archivo Black',sans-serif;font-size:36px;margin-top:10px;}
   .card .sub{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.5;margin-top:12px;opacity:0.85;}
   .card.equity .big{color:var(--equity);}
   .card.soy .big{color:var(--soy);}
+  .card.gold .big{color:var(--gold);}
   .card.erosion .big{color:var(--erosion);}
 
   /* ---------- READING ---------- */
   .reading{
-    display:grid;grid-template-columns:1fr 1fr 1fr;gap:36px;
+    display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:30px;
     padding:50px 0 70px;
     font-family:'Helvetica Neue',Arial,sans-serif;
-    font-size:14.5px;line-height:1.65;
+    font-size:14px;line-height:1.62;
   }
-  .reading h3{font-size:14px;margin-bottom:10px;text-transform:none;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;}
+  .reading h3{font-size:13.5px;margin-bottom:10px;text-transform:none;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;}
   .reading .marker{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--paper);
     font-family:'Archivo Black',sans-serif;font-size:12px;text-align:center;line-height:26px;margin-bottom:14px;}
   .reading .marker.soy{background:var(--soy);}
+  .reading .marker.gold{background:var(--gold);}
   .reading .marker.erosion{background:var(--erosion);}
 
   /* ---------- METHOD / FOOTER ---------- */
@@ -156,28 +159,17 @@
 </head>
 <body>
 
-<nav>
-  <div class="navrow">
-    <div class="brand">30Y / USD·SOJA·EQUITY</div>
-    <div class="links">
-      <span onclick="document.getElementById('chart').scrollIntoView({behavior:'smooth'})">Gráfico</span>
-      <span onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">Métricas</span>
-      <span onclick="document.getElementById('read').scrollIntoView({behavior:'smooth'})">Lectura</span>
-      <span onclick="document.getElementById('meth').scrollIntoView({behavior:'smooth'})">Fuentes</span>
-    </div>
-  </div>
-</nav>
 
 <header class="wrap hero">
   <div class="eyebrow">Serie indexada · Base 100 = 1995 · Escala logarítmica</div>
   <h1>Un<br>dólar<span class="accent">.</span><br>Tres relojes<span class="accent">.</span></h1>
   <p class="thesis">
-    Treinta años de historia monetaria en una sola curva: <b>US$100 nominales de 1995 hoy compran apenas US$47,33</b> de aquel poder adquisitivo. Mientras tanto la soja —el commodity de referencia para cualquier economía exportadora de alimentos— dibuja una <b>meseta con picos, no una tendencia</b>: hoy vale, en dólares nominales, prácticamente lo mismo que en 2007. El S&P 500, en cambio, multiplicó su valor indexado por más de <b>16 veces</b>. Un mismo eje temporal, tres velocidades completamente distintas.
+    Treinta años de historia monetaria en una sola curva: <b>US$100 nominales de 1995 hoy compran apenas US$47,33</b> de aquel poder adquisitivo. Mientras tanto la soja —el commodity de referencia para cualquier economía exportadora de alimentos— dibuja una <b>meseta con picos, no una tendencia</b>: hoy vale, en dólares nominales, prácticamente lo mismo que en 2007. El oro, el refugio de valor por antonomasia, avanza de forma más sostenida que la soja pero sin el ritmo del equity. El S&P 500, en cambio, multiplicó su valor indexado por más de <b>12 veces</b>. Un mismo eje temporal, cuatro velocidades completamente distintas.
   </p>
 
   <div class="metaRow">
     <div><div class="k">Rango analizado</div><div class="v">1995 → 2025</div></div>
-    <div><div class="k">S&P 500 (índice, nominal)</div><div class="v">×16,2</div></div>
+    <div><div class="k">S&P 500 (índice, nominal)</div><div class="v">×12,9</div></div>
     <div><div class="k">Poder de compra de US$100</div><div class="v">US$47,33</div></div>
   </div>
 </header>
@@ -196,6 +188,7 @@
     <div class="legend">
       <div class="item"><span class="swatch" style="background:var(--equity)"></span>S&P 500 (nominal, indexado)</div>
       <div class="item"><span class="swatch" style="background:var(--soy)"></span>Soja — precio internacional (nominal, indexado)</div>
+      <div class="item"><span class="swatch" style="background:var(--gold)"></span>Oro — onza troy (nominal, indexado)</div>
       <div class="item"><span class="swatch" style="background:var(--erosion);height:0;border-top:3px dashed var(--erosion);"></span>Poder de compra de US$100 de 1995 (CPI-U)</div>
     </div>
 
@@ -227,6 +220,11 @@
         <div class="big">+1,8%</div>
         <div class="sub">CAGR real ≈ −0,7% anual. La "meseta" no es estancamiento aparente: en términos reales, el poder de compra que otorga una tonelada de soja se contrajo en 30 años.</div>
       </div>
+      <div class="card gold">
+        <div class="tag">Oro — CAGR nominal</div>
+        <div class="big">+7,6%</div>
+        <div class="sub">CAGR real ≈ +5,1% anual. Rinde muy por debajo del equity, pero sostiene su función de reserva de valor incluso frente a los shocks de 2008, 2020 y 2022.</div>
+      </div>
       <div class="card erosion">
         <div class="tag">Inflación US (CPI-U) — promedio</div>
         <div class="big">+2,5%</div>
@@ -238,16 +236,21 @@
   <section id="read" class="reading">
     <div>
       <span class="marker">01</span>
+      <h3>El equity global no es "más riesgo, más retorno" — es la contracara de la erosión</h3>
+      <p>El S&P 500 no solo licuó la inflación: la superó por un margen de captura de valor real que ningún otro activo de la muestra replicó en el período. Esto no es casualidad — es la función misma del equity: un reclamo sobre flujos de caja futuros que, agregados, crecen en términos reales por productividad y reinversión, mientras el efectivo solo pierde valor por diseño (el 2% target de inflación es, en sí mismo, una política deliberada de erosión).</p>
+    </div>
+    <div>
+      <span class="marker soy">02</span>
       <h3>La meseta de la soja no es casualidad de commodity</h3>
       <p>El pico 2011-2013 (supercycle de commodities: demanda china estructural, biocombustibles, QE post-2008) y el pico 2021-2022 (shock pandémico + guerra Rusia-Ucrania) son eventos financieros, no agronómicos. Entre esos picos, el precio nominal vuelve sistemáticamente a una banda de US$320-400/ton — la misma banda de 2007. Para un país exportador de alimentos, esto implica que el término de intercambio no mejora estructuralmente: mejora en shocks, y luego revierte.</p>
     </div>
     <div>
-      <span class="marker soy">02</span>
-      <h3>El equity global no es "más riesgo, más retorno" — es la contracara de la erosión</h3>
-      <p>El S&P 500 no solo licuó la inflación: la superó por un margen de captura de valor real que ningún commodity replicó en el período. Esto no es casualidad — es la función misma del equity: un reclamo sobre flujos de caja futuros que, agregados, crecen en términos reales por productividad y reinversión, mientras el efectivo solo pierde valor por diseño (el 2% target de inflación es, en sí mismo, una política deliberada de erosión).</p>
+      <span class="marker gold">03</span>
+      <h3>El oro cumple su función, pero a media máquina frente al equity</h3>
+      <p>Con un CAGR nominal de +7,6% (real ≈ +5,1%), el oro le ganó cómodamente a la inflación y a la soja en todo el período — sin la volatilidad estructural de un commodity agrícola atado a cosechas y clima. Pero comparado contra el S&P 500, quedó rezagado: es un activo de preservación de valor, no de crecimiento compuesto. Su mejor momento relativo coincide, previsiblemente, con los años de tasas reales negativas (2008-2012, 2020-2022).</p>
     </div>
     <div>
-      <span class="marker erosion">03</span>
+      <span class="marker erosion">04</span>
       <h3>El dólar bajo el colchón es la peor call trade del período</h3>
       <p>US$100 de 1995, no invertidos, valen hoy US$47,33 en poder de compra — una pérdida del 52,7% en 30 años pese a que EE.UU. tuvo una de las inflaciones más "domadas" del mundo desarrollado en ese lapso. La lección no es sofisticada, pero rara vez se visualiza con esta claridad: mantener liquidez nominal sin exposición a activos reales es, estructuralmente, una posición corta contra el tiempo.</p>
     </div>
@@ -267,6 +270,7 @@
         <b>Fuentes</b><br>
         S&P 500 — Standard & Poor's / Robert Shiller, vía multpl.com (serie histórica anual).<br>
         Soja — Precio internacional de referencia (FOB U.S. Gulf), Fondo Monetario Internacional, vía FRED (Federal Reserve Bank of St. Louis), serie PSOYBUSDA, promedio anual en USD/tonelada métrica.<br>
+        Oro — Precio promedio anual de la onza troy en USD, referencia LBMA / World Gold Council.<br>
         CPI-U — U.S. Bureau of Labor Statistics, series históricas y mensuales 2016-2026 combinadas con promedios anuales publicados 1995-2015.<br><br>
         <span class="finalNote">Desarrollo: <a href="https://amabili.space/" target="_blank" rel="noopener">Nicolás Amábili</a> · Con fines educativos y demostrativos.</span>
       </div>
@@ -281,14 +285,17 @@ const SP_RAW = [465.25,614.42,766.22,963.36,1248.77,1425.59,1335.63,1140.21,895.
 
 const SOY_RAW = [224.0154,277.4580,280.6025,223.2900,174.9194,183.0517,168.7546,188.8662,233.1875,276.6330,223.1503,217.4539,317.3197,452.9425,378.5456,384.9453,484.2459,537.7618,517.2038,457.8135,347.3556,362.7068,358.8242,342.5282,327.0021,349.8775,505.1009,569.6918,520.4768,405.2100,380.6765];
 
+const GOLD_RAW = [384.99,387.81,331.02,294.24,278.98,279.11,271.04,309.73,363.38,409.72,444.74,603.46,695.39,871.96,972.35,1224.53,1571.52,1668.98,1411.23,1266.40,1160.06,1250.80,1257.12,1268.49,1392.60,1770.11,1798.61,1800.97,1940.54,2386.19,3431.00];
+
 const CPI = [152.383,156.858,160.523,163.007,166.583,172.192,177.042,179.867,183.960,188.893,195.267,201.558,207.344,215.254,214.565,218.076,224.943,229.601,232.962,236.744,237.038,240.007,245.120,251.107,255.657,258.811,270.970,292.655,304.702,313.689,321.943];
 
 const spIdx = SP_RAW.map(v => v/SP_RAW[0]*100);
 const soyIdx = SOY_RAW.map(v => v/SOY_RAW[0]*100);
+const goldIdx = GOLD_RAW.map(v => v/GOLD_RAW[0]*100);
 const ppIdx = CPI.map(v => CPI[0]/v*100);
 
 // ---- chart geometry ----
-const W=1200,H=620, ML=64, MR=26, MT=20, MB=54;
+const W=1200,H=620, ML=64, MR=118, MT=20, MB=54;
 const plotW = W-ML-MR, plotH = H-MT-MB;
 const yMin=40, yMax=1800;
 
@@ -344,15 +351,18 @@ s += `<rect x="${ML}" y="${MT}" width="${plotW}" height="${plotH}" fill="none" s
 // series paths
 const spPath = pathFor(spIdx);
 const soyPath = pathFor(soyIdx);
+const goldPath = pathFor(goldIdx);
 const ppPath = pathFor(ppIdx);
 
 s += `<path id="pathSP" d="${spPath}" fill="none" stroke="var(--equity)" stroke-width="3" stroke-linejoin="round"></path>`;
 s += `<path id="pathSOY" d="${soyPath}" fill="none" stroke="var(--soy)" stroke-width="3" stroke-linejoin="round"></path>`;
+s += `<path id="pathGOLD" d="${goldPath}" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linejoin="round"></path>`;
 s += `<path id="pathPP" d="${ppPath}" fill="none" stroke="var(--erosion)" stroke-width="3" stroke-dasharray="7 5" stroke-linejoin="round"></path>`;
 
 // end labels
 s += `<text x="${xScale(2025)+8}" y="${yScale(spIdx[30])+4}" font-size="12" fill="var(--equity)" font-family="Archivo Black, sans-serif">S&amp;P 500</text>`;
 s += `<text x="${xScale(2025)+8}" y="${yScale(soyIdx[30])+4}" font-size="12" fill="var(--soy)" font-family="Archivo Black, sans-serif">SOJA</text>`;
+s += `<text x="${xScale(2025)+8}" y="${yScale(goldIdx[30])+4}" font-size="12" fill="var(--gold)" font-family="Archivo Black, sans-serif">ORO</text>`;
 s += `<text x="${xScale(2025)+8}" y="${yScale(ppIdx[30])+4}" font-size="12" fill="var(--erosion)" font-family="Archivo Black, sans-serif">USD real</text>`;
 
 // hover targets
@@ -380,6 +390,7 @@ function mkDot(color){
 }
 const dotSP = mkDot('#1a1a1a');
 const dotSOY = mkDot('#a87b1f');
+const dotGOLD = mkDot('#2f5d8a');
 const dotPP = mkDot('#b4321f');
 
 const tooltip = document.getElementById('tooltip');
@@ -395,11 +406,13 @@ svg.querySelectorAll('.hoverzone').forEach(z=>{
     crosshair.setAttribute('x1',x); crosshair.setAttribute('x2',x); crosshair.style.opacity=1;
     dotSP.setAttribute('cx',x); dotSP.setAttribute('cy',yScale(spIdx[i])); dotSP.style.opacity=1;
     dotSOY.setAttribute('cx',x); dotSOY.setAttribute('cy',yScale(soyIdx[i])); dotSOY.style.opacity=1;
+    dotGOLD.setAttribute('cx',x); dotGOLD.setAttribute('cy',yScale(goldIdx[i])); dotGOLD.style.opacity=1;
     dotPP.setAttribute('cx',x); dotPP.setAttribute('cy',yScale(ppIdx[i])); dotPP.style.opacity=1;
 
     tooltip.innerHTML = `<div class="ty">${YEARS[i]}</div>
       <div class="row"><span>S&amp;P 500</span><span>${fmt(spIdx[i])} <span style="opacity:.55">(US$ ${fmtUSD(SP_RAW[i])})</span></span></div>
       <div class="row"><span>Soja</span><span>${fmt(soyIdx[i])} <span style="opacity:.55">(US$ ${fmtUSD(SOY_RAW[i],0)}/t)</span></span></div>
+      <div class="row"><span>Oro</span><span>${fmt(goldIdx[i])} <span style="opacity:.55">(US$ ${fmtUSD(GOLD_RAW[i],0)}/oz)</span></span></div>
       <div class="row"><span>USD real</span><span>${fmt(ppIdx[i])} <span style="opacity:.55">(US$ ${fmtUSD(ppIdx[i])})</span></span></div>`;
     tooltip.style.opacity=1;
 
@@ -413,7 +426,7 @@ svg.querySelectorAll('.hoverzone').forEach(z=>{
   });
 });
 svg.addEventListener('mouseleave', ()=>{
-  crosshair.style.opacity=0; dotSP.style.opacity=0; dotSOY.style.opacity=0; dotPP.style.opacity=0;
+  crosshair.style.opacity=0; dotSP.style.opacity=0; dotSOY.style.opacity=0; dotGOLD.style.opacity=0; dotPP.style.opacity=0;
   tooltip.style.opacity=0;
 });
 
@@ -434,6 +447,7 @@ const obs = new IntersectionObserver((entries)=>{
       animated=true;
       animatePath('pathSP');
       animatePath('pathSOY');
+      animatePath('pathGOLD');
       setTimeout(()=>{
         const p = document.getElementById('pathPP');
         const len = p.getTotalLength();
